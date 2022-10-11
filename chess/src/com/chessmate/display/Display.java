@@ -68,7 +68,7 @@ public abstract class Display {
 		Arrays.fill(bufferData, clearColor);
 	}
 	
-	//Рендер (візуалізація) графіки
+	//Рендер (візуалізація) 2d графіки
 	public static void render() {
 		bufferGraphics.setColor(new Color(0xff0000ff));
 		bufferGraphics.fillOval((int)(1280 / 2 - 50 + (Math.sin(delta) * 200)), 720 / 2 - 50, 100, 100);
