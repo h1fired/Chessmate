@@ -10,7 +10,7 @@ import com.chessmate.display.Display;
 public class Main {
 
 	public static void main(String[] args) {
-		//Запуск гри
+		//Запуск гри 
 		Display.create(1280, 720, "Chessmate", 0xff000000, 3);
 		
 		Timer t = new Timer(1000 / 60, new AbstractAction() {

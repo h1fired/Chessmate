@@ -50,7 +50,7 @@ public abstract class Display {
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
-		//Буфер для графіки цілого вікна
+		//Буфер для графіки цілого вікна 
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		bufferData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
 		bufferGraphics = buffer.getGraphics();
