@@ -26,10 +26,6 @@ public abstract class Display {
 	
 	private static BufferStrategy bufferStrategy;
 	
-	//tmp
-	private static float delta = 0;
-	//tmp end
-	
 	public static void create(int width, int height, String title, int _clearColor, int numBuffers) {
 		//Перевірка чи запущена гра, якщо ні - виходить з функції
 		if(created) { 
@@ -54,6 +50,7 @@ public abstract class Display {
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		bufferData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
 		bufferGraphics = buffer.getGraphics();
+		((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		clearColor = _clearColor;
 		
 		//Мульти буферизація
@@ -68,27 +65,26 @@ public abstract class Display {
 		Arrays.fill(bufferData, clearColor);
 	}
 	
-	//Рендер (візуалізація) 2d графіки
-	public static void render() {
-		bufferGraphics.setColor(new Color(0xff0000ff));
-		bufferGraphics.fillOval((int)(1280 / 2 - 50 + (Math.sin(delta) * 200)), 720 / 2 - 50, 100, 100);
-		
-		((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		bufferGraphics.setColor(new Color(0xff0000ff));
-		bufferGraphics.fillOval((int)(1280 / 2 - 50 + (Math.sin(delta) * 200)), 720 / 2 - 50 + 130, 100, 100);
-		((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		
-		delta += 0.02f;
-		
-		
-	}
-	
 	// Заміна стандартного буфера на створений buffer
 	public static void swapBuffers() {
 		Graphics g = bufferStrategy.getDrawGraphics();
 		g.drawImage(buffer, 0, 0, null);
 		bufferStrategy.show();
+	}
+	
+	public static Graphics2D getGraphics() {
+		return (Graphics2D) bufferGraphics;
+	}
+	
+	public static void destroy() {
+		if(!created)
+			return;
+		
+		window.dispose();
+	}
+	
+	public static void setTitle(String title) {
+		window.setTitle(title);
 	}
 	
 }
