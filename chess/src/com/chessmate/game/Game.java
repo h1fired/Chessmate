@@ -1,9 +1,12 @@
 package com.chessmate.game;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
+import com.chessmate.IO.Input;
 import com.chessmate.display.Display;
+import com.chessmate.graphics.Sprite;
+import com.chessmate.graphics.SpriteSheet;
+import com.chessmate.graphics.TextureAtlas;
 import com.chessmate.utils.Time;
 
 public class Game implements Runnable{
@@ -19,6 +22,9 @@ public class Game implements Runnable{
 	public static final float UPDATE_INTERVAL = Time.SECOND / UPDATE_RATE;
 	public static final long SLEEP_TIME = 1;
 	
+	public static final String ATLAS_FILENAME = "chess_texatlas.png";
+	public static final int SINGLE_TEX_SCALE = 128;
+	
 	private boolean running;
 	private Thread gameThread;
 	private Graphics2D graphics;
@@ -27,14 +33,26 @@ public class Game implements Runnable{
 	
 	//temp
 	private float deltaM = 0;
+	private TextureAtlas atlas;
+	
+	private SpriteSheet sheet;
+	private Sprite sprite;
+	private Input input;
 	//temp end
 	
 	public Game() {
 		running = false;
-		Display.create(WIDTH, HEIGHT, TITLE, CLEAR_COLOR, NUM_BUFFERS);
+		input = new Input();
+		Display.create(WIDTH, HEIGHT, TITLE, CLEAR_COLOR, NUM_BUFFERS, input);
 		graphics = Display.getGraphics();
+		
+		atlas = new TextureAtlas(ATLAS_FILENAME);
+		sheet = new SpriteSheet(atlas.getAtlasImage());
+		sprite = new Sprite(sheet.getSprite(3), 1f);
+		
 	}
 	
+	//Запуск гри
 	public synchronized void start() {
 		if(running)
 			return;
@@ -44,6 +62,7 @@ public class Game implements Runnable{
 		gameThread.start();
 	}
 	
+	//Закриття гри
 	public synchronized void stop() {
 		if(!running)
 			return;
@@ -59,6 +78,7 @@ public class Game implements Runnable{
 		cleanUp();
 	}
 	
+	//Запуск GameLoop
 	public void run() {
 		
 		int fps = 0;
@@ -106,7 +126,7 @@ public class Game implements Runnable{
 			}
 			
 			if(count >= Time.SECOND) {
-				Display.setTitle(TITLE + " || fps: " + fps + " || upd:" + upd + " || updl: " + updl);
+				Display.setTitle(TITLE + " || fps: " + fps + " || upd:" + upd + " || updl: " + updl + " // mouse pos x: " + + input.getPosition().getX() + ", y: " + input.getPosition().getX());
 				upd = 0;
 				fps = 0;
 				updl = 0;
@@ -116,21 +136,34 @@ public class Game implements Runnable{
 		}
 	}
 	
+	//Оновлення всіх обчислень
 	private void update() {
 		deltaM += 0.02f;
+		
+		handleMouseInput();
 	}
 	
+	//Синхронізація викликів обробника подій мишки
+	private void handleMouseInput() {
+		if(input.isMouseClicked()) { 
+			System.out.println("MOUSE POS x: " + input.getPosition().getX() + ", y: " + input.getPosition().getX()); 
+		}
+		
+		input.clearMouseClick();
+		
+	}
+
+	//Візуалізація гри
 	private void render() {
 		Display.clear();
 		
-		graphics.setColor(Color.white);
-		graphics.fillOval(1280 / 2 - 50 + (int)(Math.sin(deltaM) * 200), 720 / 2 - 50, 100, 100);
-		
+		sprite.render(graphics, 100, 100);
 		
 		
 		Display.swapBuffers();
 	}
 	
+	//Закриття процесів зв'язаних з грою
 	private void cleanUp() {
 		Display.destroy();
 	}

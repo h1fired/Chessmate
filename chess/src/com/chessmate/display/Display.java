@@ -1,7 +1,6 @@
 package com.chessmate.display;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,6 +11,8 @@ import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
+
+import com.chessmate.IO.Input;
 
 public abstract class Display {
 	
@@ -26,7 +27,7 @@ public abstract class Display {
 	
 	private static BufferStrategy bufferStrategy;
 	
-	public static void create(int width, int height, String title, int _clearColor, int numBuffers) {
+	public static void create(int width, int height, String title, int _clearColor, int numBuffers, Input input) {
 		//Перевірка чи запущена гра, якщо ні - виходить з функції
 		if(created) { 
 			return;
@@ -40,11 +41,15 @@ public abstract class Display {
 		Dimension size = new Dimension(width, height);
 		content.setPreferredSize(size);
 		
+		mouseListener(input); //Запускає обробник подій мишки
+		
 		window.setResizable(false);
 		window.getContentPane().add(content);
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
+		
+		
 		
 		//Буфер для графіки цілого вікна 
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -72,10 +77,12 @@ public abstract class Display {
 		bufferStrategy.show();
 	}
 	
+	//Дозволяє отримати компонент графіки
 	public static Graphics2D getGraphics() {
 		return (Graphics2D) bufferGraphics;
 	}
 	
+	//Закриває вікно та зв'язані процеси
 	public static void destroy() {
 		if(!created)
 			return;
@@ -83,8 +90,15 @@ public abstract class Display {
 		window.dispose();
 	}
 	
+	//Встановлює ім'я для вікна
 	public static void setTitle(String title) {
 		window.setTitle(title);
+	}
+	
+	// Обробник подій мишки
+	public static void mouseListener(Input inputListener) {
+		content.addMouseListener(inputListener);
+		content.addMouseMotionListener(inputListener);
 	}
 	
 }
