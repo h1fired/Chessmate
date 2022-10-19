@@ -1,4 +1,4 @@
-package com.chessmate.graphics;
+package com.chessmate.utils;
 
 public class Contains {
 
@@ -28,6 +28,22 @@ public class Contains {
 	
 	public int getMaxY() {
 		return max_y;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	public void setMaxX(int x) {
+		this.max_x = x;
+	}
+	
+	public void setMaxY(int y) {
+		this.max_y = y;
 	}
 
 	

@@ -4,9 +4,6 @@ import java.awt.Graphics2D;
 
 import com.chessmate.IO.Input;
 import com.chessmate.display.Display;
-import com.chessmate.graphics.Sprite;
-import com.chessmate.graphics.SpriteSheet;
-import com.chessmate.graphics.TextureAtlas;
 import com.chessmate.ui.GamePart;
 import com.chessmate.ui.Menu;
 import com.chessmate.ui.Settings;
@@ -39,29 +36,13 @@ public class Game implements Runnable{
 	private Thread gameThread;
 	private Graphics2D graphics;
 	
-
-	
-	//temp
-	private float deltaM = 0;
-	private TextureAtlas atlas;
-	
-	private SpriteSheet sheet;
-	private Sprite sprite;
 	private Input input;
-	
-	public static float MOUSE_X = 0;
-	public static float MOUSE_Y = 0;
-	//temp end
 	
 	public Game() {
 		running = false;
 		input = new Input();
 		Display.create(WIDTH, HEIGHT, TITLE, CLEAR_COLOR, NUM_BUFFERS, input);
 		graphics = Display.getGraphics();
-		
-		atlas = new TextureAtlas(ATLAS_FILENAME);
-		sheet = new SpriteSheet(atlas.getAtlasImage());
-		sprite = new Sprite(sheet.getSprite(3), 1f);
 		
 		//ініціалізація текстур "партії"
 		GamePart.init();
@@ -160,19 +141,15 @@ public class Game implements Runnable{
 			GamePart.update();
 		}
 		
-		deltaM += 0.02f;
+		
 		
 		handleMouseInput();
 	}
 	
 	//Синхронізація викликів обробника подій мишки
 	private void handleMouseInput() {
-		if(input.isMouseClicked()) { 
-			System.out.println("MOUSE POS x: " + input.getPosition().getX() + ", y: " + input.getPosition().getX());
-			MOUSE_X = input.getPosition().getX();
-			MOUSE_Y = input.getPosition().getY();
-			
-		}
+		
+		
 		
 		input.clearMouseClick();
 		

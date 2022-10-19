@@ -10,38 +10,47 @@ import com.chessmate.utils.Position;
 
 public class Input implements MouseListener, MouseMotionListener {
 
-	private Position mousePosition; // зберігає позицію мишки (x, y)
-	private boolean mouseClicked;
-	private boolean mousePressed;
+	private static Position mouseClickedPos;
+	private static Position mousePosition; // зберігає позицію мишки (x, y)
+	
+	private static boolean mouseClicked;
+	private static boolean mousePressed;
 	
 	public Input() {
+		
 		mousePosition = new Position(0, 0);
+		mouseClickedPos = new Position(0, 0);
+		
 	}
 	
 	//Повертає позицію мишки в даний момент
-	public Position getPosition() {
+	public static Position getPosition() {
 		return mousePosition;
 	}
 	
+	public static Position getClickedPosition() {
+		return mouseClickedPos;
+	}
+	
 	//Перевірка на зажим мишки
-	public boolean isMousePressed() {
+	public static boolean isMousePressed() {
 		return mousePressed;
 	}
 	
 	//Перевірка на нажаття мишки
-	public boolean isMouseClicked() {
+	public static boolean isMouseClicked() {
 		return mouseClicked;
 	}
 	
 	//Очищення нажаття мишки
 	public void clearMouseClick() {
 		mouseClicked = false;
-	}
+	};
+	
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		mousePosition = new Position((float)e.getPoint().getX(), (float)e.getPoint().getY());
-		
 	}
 
 	@Override
@@ -53,7 +62,7 @@ public class Input implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		mouseClicked = true;
-		mousePosition = new Position((float)e.getPoint().getX(), (float)e.getPoint().getY());
+		mouseClickedPos = new Position((float)e.getPoint().getX(), (float)e.getPoint().getY());
 	}
 
 	@Override
@@ -65,7 +74,7 @@ public class Input implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		mouseClicked = true;
+		mouseClicked = false;
 		mousePressed = false;
 		
 	}

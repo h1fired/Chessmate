@@ -4,10 +4,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -29,8 +26,7 @@ public abstract class Display {
 	private static int clearColor;
 	
 	private static BufferStrategy bufferStrategy;
-	
-	private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+
 	
 	public static void create(int width, int height, String title, int _clearColor, int numBuffers, Input input) {
 		//Перевірка чи запущена гра, якщо ні - виходить з функції

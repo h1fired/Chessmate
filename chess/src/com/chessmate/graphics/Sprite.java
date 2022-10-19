@@ -3,44 +3,35 @@ package com.chessmate.graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import com.chessmate.animation.Animation;
-import com.chessmate.game.Game;
+import com.chessmate.utils.Contains;
 
-public class Sprite extends Animation{
+public class Sprite{
 
 	private BufferedImage image;
-	private float scale;
 	
+	private float scale;
 	private int x;
 	private int y;
-	private static Contains contain;
 	
+	private Contains contain;
 	
 	public Sprite(BufferedImage image, float scale) {
-			
 		this.image = image;
 		this.scale = scale;
-		
-		
+		this.contain = new Contains(0, 0, 0 + (int)(image.getWidth() * scale), 0 + (int)(image.getHeight() * scale));
 	}
 	
+	//Візуалізація текстури
 	public void render(Graphics2D g, float x, float y)  {
-
-		contain = new Contains((int)x, (int)y, (int)x + (int)(image.getWidth() * scale), (int)y + (int)(image.getHeight() * scale));
-		g.drawImage(image, (int)x, (int)y, (int)(image.getWidth() * scale), (int)(image.getHeight() * scale), null);
+		this.x = (int)x;
+		this.y = (int)y;
 		
+		this.contain = new Contains(this.x, this.y, this.x + (int)(image.getWidth() * scale), this.y + (int)(image.getHeight() * scale));
+		g.drawImage(image, this.x, + this.y, (int)(image.getWidth() * scale), (int)(image.getHeight() * scale), null);
 	}
 	
-	public boolean isContain() {
-		
-		if(Game.MOUSE_X >= contain.getX() && Game.MOUSE_X <= contain.getMaxX() && Game.MOUSE_Y >= contain.getY() && Game.MOUSE_Y <= contain.getMaxY()) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	
-	public static void printContain() {
+	//Вивід в консоль області фігури
+	public void printContain() {
 		System.out.println("CONTAIN = x: " + contain.getX() + " || y: " + contain.getY() + " || maxX: " + contain.getMaxX() + " || maxY: " + contain.getMaxY());
 	}
 	
